@@ -1,5 +1,6 @@
 package com.financas.convert;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,8 +8,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.financas.domain.dto.ValorTotalDto;
 import com.financas.domain.dto.lancamento.LancamentoCadastroDto;
 import com.financas.domain.dto.lancamento.LancamentoRetornoDto;
+import com.financas.domain.dto.lancamento.LancamentoRetornoValorTotalDto;
 import com.financas.domain.dto.lancamento.LancamentoEdicaoDto;
 import com.financas.domain.model.Categoria;
 import com.financas.domain.model.Lancamento;
@@ -25,8 +28,13 @@ public class LancamentoConvert {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public List<LancamentoRetornoDto> converter(List<Lancamento> lancamentos) {
+	public LancamentoRetornoValorTotalDto converter(List<Lancamento> lancamentos) {
 		List<LancamentoRetornoDto> lancamentosRetornoDto = new ArrayList<>();
+		
+		BigDecimal valor = BigDecimal.ZERO;
+		
+		ValorTotalDto v = null;
+		
 		for (Lancamento l : lancamentos) {
 			LancamentoRetornoDto lancamentoRetornoDto = new LancamentoRetornoDto();
 			lancamentoRetornoDto.setCodigo(l.getCodigo());
@@ -35,10 +43,25 @@ public class LancamentoConvert {
 			lancamentoRetornoDto.setDescricao(l.getDescricao());
 			lancamentoRetornoDto.setValor(l.getValor());
 			lancamentoRetornoDto.setCategoria(l.getCategoria().getDescricao());
+			
+			v = new ValorTotalDto();
+
+			if (lancamentoRetornoDto.getTipo().equals("RECEITA")) {
+				valor = valor.add(l.getValor());
+				v.setValorTotal(valor);
+			} else if (lancamentoRetornoDto.getTipo().equals("DESPESA")) {
+				valor = valor.subtract(l.getValor());
+				v.setValorTotal(valor);
+			}
+			
 			lancamentosRetornoDto.add(lancamentoRetornoDto);
 		}
 
-		return lancamentosRetornoDto;
+		LancamentoRetornoValorTotalDto lancamentoRetornoValorTotalDto = new LancamentoRetornoValorTotalDto();
+		lancamentoRetornoValorTotalDto.setLancamentos(lancamentosRetornoDto);
+		lancamentoRetornoValorTotalDto.setValorTotal(v);
+		
+		return lancamentoRetornoValorTotalDto;
 	}
 
 	public Lancamento converter(LancamentoCadastroDto lancamentoCadastroDto) {

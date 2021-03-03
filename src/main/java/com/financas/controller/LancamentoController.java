@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.financas.convert.LancamentoConvert;
 import com.financas.domain.dto.lancamento.LancamentoCadastroDto;
 import com.financas.domain.dto.lancamento.LancamentoRetornoDto;
+import com.financas.domain.dto.lancamento.LancamentoRetornoValorTotalDto;
 import com.financas.domain.dto.lancamento.LancamentoEdicaoDto;
 import com.financas.domain.model.Lancamento;
 import com.financas.service.LancamentoService;
@@ -38,8 +39,8 @@ public class LancamentoController {
 	public ResponseEntity<?> buscarTodos() {
 		String usernameUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Lancamento> lancamentos = this.lancamentoService.buscarTodos(usernameUsuario);
-		List<LancamentoRetornoDto> lancamentosRetornoDto = this.lancamentoConvert.converter(lancamentos);
-		return new ResponseEntity<>(lancamentosRetornoDto, HttpStatus.OK);
+		LancamentoRetornoValorTotalDto lancamentoRetornoValorTotalDto = this.lancamentoConvert.converter(lancamentos);
+		return new ResponseEntity<>(lancamentoRetornoValorTotalDto, HttpStatus.OK);
 	}
 
 	@PostMapping
