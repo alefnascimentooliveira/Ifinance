@@ -10,5 +10,7 @@ public class TokenDto {
 	private String tipo = "Bearer";
 
 	private String token;
+	
+	private String nomeDoUsuario;
 
 }

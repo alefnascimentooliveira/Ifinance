@@ -53,6 +53,7 @@ public class UsuarioController {
 
 		TokenDto tokenDto = new TokenDto();
 		tokenDto.setToken(token);
+		tokenDto.setNomeDoUsuario(usuarioLoginDto.getUsername());
 
 		return new ResponseEntity<>(tokenDto, HttpStatus.ACCEPTED);
 
