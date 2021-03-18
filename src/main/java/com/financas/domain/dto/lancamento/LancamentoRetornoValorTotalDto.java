@@ -1,8 +1,7 @@
 package com.financas.domain.dto.lancamento;
 
+import java.math.BigDecimal;
 import java.util.List;
-
-import com.financas.domain.dto.ValorTotalDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +12,7 @@ public class LancamentoRetornoValorTotalDto {
 	
 	private List<LancamentoRetornoDto> lancamentos;
 	
-	private ValorTotalDto valorTotal;
+	private BigDecimal valorTotal;
 	
 
 }

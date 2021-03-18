@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.financas.domain.dto.ValorTotalDto;
 
 import lombok.Getter;
 import lombok.Setter;

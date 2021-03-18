@@ -31,9 +31,7 @@ public class LancamentoConvert {
 	public LancamentoRetornoValorTotalDto converter(List<Lancamento> lancamentos) {
 		List<LancamentoRetornoDto> lancamentosRetornoDto = new ArrayList<>();
 		
-		BigDecimal valor = BigDecimal.ZERO;
-		
-		ValorTotalDto v = null;
+		BigDecimal valor = BigDecimal.valueOf(0.00);
 		
 		for (Lancamento l : lancamentos) {
 			LancamentoRetornoDto lancamentoRetornoDto = new LancamentoRetornoDto();
@@ -44,14 +42,10 @@ public class LancamentoConvert {
 			lancamentoRetornoDto.setValor(l.getValor());
 			lancamentoRetornoDto.setCategoria(l.getCategoria().getDescricao());
 			
-			v = new ValorTotalDto();
-
 			if (lancamentoRetornoDto.getTipo().equals("RECEITA")) {
-				valor = valor.add(l.getValor());
-				v.setValorTotal(valor);
+				valor = valor.add(lancamentoRetornoDto.getValor());
 			} else if (lancamentoRetornoDto.getTipo().equals("DESPESA")) {
 				valor = valor.subtract(l.getValor());
-				v.setValorTotal(valor);
 			}
 			
 			lancamentosRetornoDto.add(lancamentoRetornoDto);
@@ -59,7 +53,7 @@ public class LancamentoConvert {
 
 		LancamentoRetornoValorTotalDto lancamentoRetornoValorTotalDto = new LancamentoRetornoValorTotalDto();
 		lancamentoRetornoValorTotalDto.setLancamentos(lancamentosRetornoDto);
-		lancamentoRetornoValorTotalDto.setValorTotal(v);
+		lancamentoRetornoValorTotalDto.setValorTotal(valor);
 		
 		return lancamentoRetornoValorTotalDto;
 	}

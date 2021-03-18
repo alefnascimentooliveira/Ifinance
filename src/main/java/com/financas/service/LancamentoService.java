@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.financas.domain.model.Lancamento;
+import com.financas.filtro.LancamentoFiltro;
 import com.financas.repository.LancamentoRepository;
 
 @Service
@@ -22,8 +23,8 @@ public class LancamentoService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Lancamento> buscarTodos(String usernameUsuario) {
-		return this.lancamentoRepository.buscarTodos(usernameUsuario);
+	public List<Lancamento> buscarTodos(LancamentoFiltro lancamentoFiltro, String usernameUsuario) {
+		return this.lancamentoRepository.filtrar(lancamentoFiltro, usernameUsuario);
 	}
 
 	@Transactional
