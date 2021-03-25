@@ -25,17 +25,50 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		
 		String sql = "select * from lancamento where lancamento.username_usuario = " + "'"+usernameUsuario+"'";
 		
-		if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() != null) {
-			sql += " and lancamento.data between " + "'"+lancamentoFiltro.getDataDe()+"'" + " and " + "'"+lancamentoFiltro.getDataAte()+"'";
+		// informou todos os filtros
+		if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() != null && lancamentoFiltro.getTipo() != null) {
+			sql += " and lancamento.data between " 
+		        + "'"+lancamentoFiltro.getDataDe()+"'" 
+				+ " and " + "'"+lancamentoFiltro.getDataAte()+"'" + " and lancamento.tipo = " + "'"+lancamentoFiltro.getTipo()+"'";
 		}
 		
-		else if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() == null) {
-			sql += " and lancamento.data >= " +"'"+lancamentoFiltro.getDataDe()+"'";
+		// informou somente a data de inicio e o tipo
+		else if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() == null && lancamentoFiltro.getTipo() != null) {
+			sql += " and lancamento.data >= " 
+				+"'"+lancamentoFiltro.getDataDe()+"'" + " and lancamento.tipo = " + "'"+lancamentoFiltro.getTipo()+"'";
 		}
 		
-		else if(lancamentoFiltro.getDataDe() == null && lancamentoFiltro.getDataAte() != null) {
-			sql += " and lancamento.data <= " +"'"+lancamentoFiltro.getDataAte()+"'";
+		// informou somente a data fim e o tipo
+		else if(lancamentoFiltro.getDataDe() == null && lancamentoFiltro.getDataAte() != null && lancamentoFiltro.getTipo() != null) {
+			sql += " and lancamento.data <= " 
+				+"'"+lancamentoFiltro.getDataAte()+"'" + " and lancamento.tipo = " + "'"+lancamentoFiltro.getTipo()+"'";
 		}
+		
+		// informou somente o tipo
+		else if(lancamentoFiltro.getDataDe() == null && lancamentoFiltro.getDataAte() == null && lancamentoFiltro.getTipo() != null) {
+			sql += "and lancamento.tipo = " +"'"+lancamentoFiltro.getTipo()+"'";
+		}
+		
+		// informou somente a data inicio e fim
+		else if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() != null && lancamentoFiltro.getTipo() == null) {
+			sql += " and lancamento.data between " 
+			        + "'"+lancamentoFiltro.getDataDe()+"'" 
+					+ " and " + "'"+lancamentoFiltro.getDataAte()+"'";
+		}
+		
+		// informou somente a data inicio
+		else if(lancamentoFiltro.getDataDe() != null && lancamentoFiltro.getDataAte() == null && lancamentoFiltro.getTipo() == null) {
+			sql += " and lancamento.data >= " 
+					+"'"+lancamentoFiltro.getDataDe()+"'";
+		}
+		
+		// informou somente a data fim
+		else if(lancamentoFiltro.getDataDe() == null && lancamentoFiltro.getDataAte() != null && lancamentoFiltro.getTipo() == null) {
+			sql += " and lancamento.data <= " 
+					+"'"+lancamentoFiltro.getDataAte()+"'";
+		}
+		
+		
 		
 		Query query = entityManager.createNativeQuery(sql, Lancamento.class);
 		

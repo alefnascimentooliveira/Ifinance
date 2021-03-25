@@ -16,5 +16,7 @@ public class LancamentoFiltro {
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataAte;
+	
+	private String tipo;
 
 }
